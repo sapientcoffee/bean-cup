@@ -1,0 +1,10 @@
+{
+  "name": "bean-cup",
+  "version": "1.0.0",
+  "description": "Unified Visual Dashboard, Kanban Tracker, and Workflow State Scanner for Antigravity SDLC pipelines.",
+  "author": {
+    "name": "sapientcoffee"
+  },
+  "repository": "https://github.com/sapientcoffee/bean-cup",
+  "license": "Apache-2.0"
+}

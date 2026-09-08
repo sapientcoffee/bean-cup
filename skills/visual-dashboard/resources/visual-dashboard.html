@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Antigravity OS — Dashboard ({{MONIKER}})</title>
+  
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d2c4ba; border-radius: 4px; }
+
+    /* Clean Markdown Typography & Table Styling */
+    .markdown-rendered-body {
+      color: #1e1b19;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .markdown-rendered-body h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: #33210d;
+      margin-top: 1.25rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid rgba(210, 196, 186, 0.4);
+    }
+    .markdown-rendered-body h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #33210d;
+      margin-top: 1.15rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid rgba(210, 196, 186, 0.25);
+    }
+    .markdown-rendered-body h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #4b3621;
+      margin-top: 1rem;
+      margin-bottom: 0.4rem;
+    }
+    .markdown-rendered-body h4, .markdown-rendered-body h5 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #4e453d;
+      margin-top: 0.75rem;
+      margin-bottom: 0.3rem;
+    }
+    .markdown-rendered-body p {
+      margin-top: 0.4rem;
+      margin-bottom: 0.65rem;
+    }
+    .markdown-rendered-body ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-top: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .markdown-rendered-body ol {
+      list-style-type: decimal;
+      padding-left: 1.5rem;
+      margin-top: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .markdown-rendered-body li {
+      margin-bottom: 0.25rem;
+    }
+    .markdown-rendered-body blockquote {
+      border-left: 4px solid #bd9f83;
+      background-color: #faf2ee;
+      padding: 0.5rem 1rem;
+      margin: 0.75rem 0;
+      border-radius: 0 0.5rem 0.5rem 0;
+      color: #4e453d;
+      font-style: italic;
+    }
+    .markdown-rendered-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.8125rem;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 1px solid #d2c4ba;
+    }
+    .markdown-rendered-body th {
+      background-color: #4b3621;
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      text-align: left;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .markdown-rendered-body td {
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid #e8e1dd;
+      color: #1e1b19;
+      background-color: #ffffff;
+    }
+    .markdown-rendered-body tr:nth-child(even) td {
+      background-color: #faf2ee;
+    }
+    .markdown-rendered-body code:not(pre code) {
+      background-color: #eee7e3;
+      color: #33210d;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+    .markdown-rendered-body pre {
+      background-color: #1b1c1b;
+      color: #f8f9fa;
+      padding: 0.85rem 1.1rem;
+      border-radius: 0.65rem;
+      overflow-x: auto;
+      margin: 0.85rem 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    .markdown-rendered-body pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    .markdown-rendered-body hr {
+      border: 0;
+      height: 1px;
+      background: #d2c4ba;
+      margin: 1.25rem 0;
+    }
+    .markdown-rendered-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      margin: 0.75rem 0;
+    }
+    .markdown-rendered-body .mermaid {
+      background-color: #ffffff;
+      border: 1px solid #d2c4ba;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      overflow-x: auto;
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+
+  <!-- Tailwind CSS CDN & Custom Config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#33210d",
+            "primary-container": "#4b3621",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#bd9f83",
+            "secondary": "#6b5c4c",
+            "secondary-container": "#f1dcc8",
+            "on-secondary-container": "#524435",
+            "tertiary": "#12272f",
+            "tertiary-container": "#283d45",
+            "surface": "#fbf9f7",
+            "surface-dim": "#e0d9d5",
+            "surface-bright": "#fff8f5",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#faf2ee",
+            "surface-container": "#f4ece9",
+            "surface-container-high": "#eee7e3",
+            "surface-container-highest": "#e8e1dd",
+            "on-surface": "#1e1b19",
+            "on-surface-variant": "#4e453d",
+            "background": "#fff8f5",
+            "on-background": "#1e1b19",
+            "outline": "#80756c",
+            "outline-variant": "#d2c4ba",
+            "latte-accent": "#f4dfcb",
+            "crema-highlight": "#bd9f83",
+            "espresso-deep": "#1b1c1b",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans", "sans-serif"],
+            "headline": ["Plus Jakarta Sans", "sans-serif"],
+            "body": ["Inter", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body class="bg-background font-body text-on-surface antialiased min-h-screen flex flex-col">
+
+  <!-- ================= SIDEBAR NAVIGATION ================= -->
+  <aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-low z-50 flex flex-col shadow-[1px_0_0_rgba(0,0,0,0.05)] border-r border-outline-variant/30">
+    <div class="p-6 flex items-center gap-3 mb-2">
+      <div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center text-white text-xl font-display font-bold shadow-sm">
+        ☕
+      </div>
+      <div class="flex flex-col">
+        <span class="font-headline font-bold text-lg tracking-tight text-primary leading-tight">Antigravity OS</span>
+        <span class="font-mono text-[11px] text-on-surface-variant">BaristaSwarm ADLC</span>
+      </div>
+    </div>
+
+    <!-- Active Moniker & Plan Selector Dropdown -->
+    <div class="px-6 mb-4">
+      <div class="bg-secondary-container/60 border border-outline-variant/40 rounded-xl px-3 py-2 flex items-center justify-between gap-2">
+        <select id="planDropdown" onchange="switchPlan(this.value)" class="bg-transparent font-mono text-xs text-on-secondary-container font-semibold w-full focus:outline-none cursor-pointer border-none py-0">
+          <option value="" selected>{{MONIKER}}</option>
+          <!-- PLAN_OPTIONS -->
+        </select>
+        <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shrink-0"></span>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="flex-1 px-4 flex flex-col gap-1" id="sidebar-nav">
+      <a href="#dashboard" class="nav-item active flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 bg-primary-container text-on-primary font-semibold shadow-sm text-left no-underline cursor-pointer" data-path="dashboard">
+        <span class="material-symbols-outlined mr-3 text-xl">dashboard</span>Dashboard
+      </a>
+      <a href="#discovery" class="nav-item flex items-center w-full px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-all duration-200 text-left no-underline cursor-pointer" data-path="discovery">
+        <span class="material-symbols-outlined mr-3 text-xl">hub</span>Product Discovery
+      </a>
+      <a href="#planning" class="nav-item flex items-center w-full px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-all duration-200 text-left no-underline cursor-pointer" data-path="planning">
+        <span class="material-symbols-outlined mr-3 text-xl">event_note</span>Planning &amp; Spec
+      </a>
+      <a href="#implementation" class="nav-item flex items-center w-full px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-all duration-200 text-left no-underline cursor-pointer" data-path="implementation" id="btn-view-board">
+        <span class="material-symbols-outlined mr-3 text-xl">code</span>Implementation &amp; Slices
+      </a>
+      <a href="#review-center" class="nav-item flex items-center w-full px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-all duration-200 text-left no-underline cursor-pointer" data-path="review-center">
+        <span class="material-symbols-outlined mr-3 text-xl">fact_check</span>Review Center
+      </a>
+      <a href="#file-explorer" class="nav-item flex items-center w-full px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-all duration-200 text-left no-underline cursor-pointer" data-path="file-explorer">
+        <span class="material-symbols-outlined mr-3 text-xl">folder_open</span>File Explorer &amp; Recap
+      </a>
+    </nav>
+
+    <!-- Bottom Swarm Status -->
+    <div class="p-6 mt-auto border-t border-outline-variant/30 flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-on-surface-variant">
+          <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>Agents Online
+        </div>
+        <button onclick="toggleConsoleDrawer()" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant transition-colors" title="Toggle Terminal Drawer">
+          <span class="material-symbols-outlined text-sm">terminal</span>
+        </button>
+      </div>
+      <div class="font-mono text-[11px] text-outline truncate" id="modelLabel">{{MODEL_VERSION}} ({{THINKING_MODE}})</div>
+      <div class="font-mono text-[11px] text-outline truncate">{{TIMESTAMP}}</div>
+    </div>
+  </aside>
+
+  <!-- ================= TOP HEADER ================= -->
+  <div class="pl-72 flex flex-col min-h-screen">
+    <header class="fixed top-0 left-72 right-0 h-16 bg-surface/80 backdrop-blur-xl z-40 flex items-center justify-between px-6 border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+          <input class="bg-surface-container-high rounded-full pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-64 transition-all" placeholder="Search workflow artifacts..." type="text"/>
+        </div>
+        <nav class="flex items-center gap-2 text-on-surface-variant font-mono text-xs uppercase tracking-widest">
+          <a class="hover:text-primary transition-colors" href="#">OS</a>
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+          <span class="text-primary font-semibold">Workspace</span>
+        </nav>
+      </div>
+
+      <!-- Topbar Telemetry Metrics & Navigation -->
+      <div class="flex items-center gap-4">
+        <button onclick="showView('glossary')" class="hidden sm:flex items-center gap-1.5 bg-surface-container-high hover:bg-surface-container-highest px-3 py-1.5 rounded-full border border-outline-variant/30 text-xs font-mono text-primary font-semibold transition-colors shadow-xs" title="Open Global Glossary & ADRs">
+          <span class="material-symbols-outlined text-sm">menu_book</span>Glossary
+        </button>
+
+        <div class="hidden md:flex items-center gap-3 bg-surface-container-high px-4 py-1.5 rounded-full border border-outline-variant/30">
+          <span class="font-mono text-xs text-on-surface-variant uppercase font-semibold">Progress:</span>
+          <div class="font-mono text-xs font-bold text-primary" id="mainProgressText">0%</div>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-2 bg-surface-container-high px-4 py-1.5 rounded-full border border-outline-variant/30">
+          <span class="font-mono text-xs text-on-surface-variant uppercase font-semibold">Slices:</span>
+          <div class="font-mono text-xs font-bold text-primary" id="completedTasksText">0 / 0</div>
+        </div>
+
+        <div class="flex items-center gap-2 bg-primary-container/10 px-3 py-1.5 rounded-full border border-primary/20">
+          <div class="font-mono text-xs text-primary font-bold" id="currentStageBadge">Stage 0</div>
+        </div>
+
+        <!-- Task Pulse Counters -->
+        <div id="pulseTodoCount" class="hidden">0</div>
+        <div id="pulseProgCount" class="hidden">0</div>
+        <div id="pulseDoneCount" class="hidden">0</div>
+
+        <div class="flex items-center gap-2 ml-2">
+          <button onclick="toggleConsoleDrawer()" class="p-2 rounded-full hover:bg-surface-container-highest text-on-surface-variant transition-colors" title="Console Logs">
+            <span class="material-symbols-outlined text-xl">coffee</span>
+          </button>
+          <div class="flex items-center gap-3 pl-2 border-l border-outline-variant/30">
+            <div class="text-right hidden sm:block">
+              <div class="text-sm font-semibold text-on-surface leading-none">Dev Barista</div>
+              <div class="font-mono text-[10px] text-on-surface-variant uppercase tracking-wider mt-0.5">Swarm Architect</div>
+            </div>
+            <div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-sm">
+              BA
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <main class="flex-1 pt-20 p-6 bg-background">
+      <div class="flex flex-col w-full gap-6 max-w-[1440px] mx-auto">
+
+        <!-- Stage Stepper Pipeline Bar -->
+        <div class="bg-surface-container rounded-2xl p-4 border border-outline-variant/30 shadow-sm overflow-x-auto">
+          <div class="flex items-center justify-between min-w-[900px] gap-2">
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('discovery')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S0: Discovery</span>
+              <span class="badge" id="badge-stage-0">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('glossary')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S1: Glossary</span>
+              <span class="badge" id="badge-stage-1">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('planning')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S2: PRD</span>
+              <span class="badge" id="badge-stage-2">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('file-explorer')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S3: Extract</span>
+              <span class="badge" id="badge-stage-3">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('planning')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S4: Spec</span>
+              <span class="badge" id="badge-stage-4">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('implementation')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S5: Plan</span>
+              <span class="badge" id="badge-stage-5">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('review-center')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S6: Gate</span>
+              <span class="badge" id="badge-stage-6">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('implementation')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S7: TDD</span>
+              <span class="badge" id="badge-stage-7">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer" onclick="showView('file-explorer')">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S8: Recap</span>
+              <span class="badge" id="badge-stage-8">⚪ Pending</span>
+            </div>
+            <div class="h-0.5 w-6 bg-outline-variant/40"></div>
+            <div class="stage-step flex flex-col items-center gap-1 cursor-pointer">
+              <span class="font-mono text-[10px] uppercase text-on-surface-variant">S9: Delivery</span>
+              <span class="badge" id="badge-stage-9">⚪ Pending</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= VIEW 1: DASHBOARD OVERVIEW ================= -->
+        <div class="view-panel active flex flex-col gap-6" id="view-dashboard">
+          <div class="grid grid-cols-12 gap-6">
+            <!-- Left Hero Card (Span 8) -->
+            <div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
+              <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm relative overflow-hidden group">
+                <div class="flex items-center justify-between mb-6 relative z-10">
+                  <div>
+                    <h1 class="font-display text-3xl font-bold text-on-surface tracking-tight">Project Overview</h1>
+                    <p class="font-body text-sm text-on-surface-variant mt-1">Autonomous agentic swarm orchestrating <code>{{MONIKER}}</code>.</p>
+                  </div>
+                  <!-- Historical Brew Selector -->
+                  <div class="relative group/brew-select">
+                    <button class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/30 rounded-full transition-all">
+                      <span class="material-symbols-outlined text-lg text-primary">history</span>
+                      <span class="font-mono text-xs text-on-surface-variant uppercase font-semibold">Switch Brew:</span>
+                      <span class="font-mono text-xs text-primary font-bold">v4.2.0 (Current)</span>
+                      <span class="material-symbols-outlined text-sm text-on-surface-variant">expand_more</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Stage 0 Overview Container -->
+                <div class="bg-surface-container-low rounded-xl p-5 border border-outline-variant/20">
+                  <!-- VD:OVERVIEW -->
+                  <p class="text-sm text-on-surface">Welcome to <strong>Antigravity OS</strong>. The swarm is actively brewing feature slices for <code>{{MONIKER}}</code>.</p>
+                  <div class="grid grid-cols-3 gap-4 mt-4">
+                    <div class="bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/20">
+                      <div class="font-mono text-[10px] uppercase text-on-surface-variant font-semibold">Active Phase</div>
+                      <div class="font-headline font-bold text-base text-primary mt-1">Stage 0: Discovery</div>
+                    </div>
+                    <div class="bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/20">
+                      <div class="font-mono text-[10px] uppercase text-on-surface-variant font-semibold">Health Posture</div>
+                      <div class="font-headline font-bold text-base text-green-700 mt-1">Filtered (Clean)</div>
+                    </div>
+                    <div class="bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/20">
+                      <div class="font-mono text-[10px] uppercase text-on-surface-variant font-semibold">Model Engine</div>
+                      <div class="font-headline font-bold text-base text-on-secondary-container mt-1">{{MODEL_VERSION}}</div>
+                    </div>
+                  </div>
+                  <!-- /VD:OVERVIEW -->
+
+                  <div class="bg-surface-container-highest/30 rounded-xl p-4 border border-outline-variant/30 mt-4 flex items-center justify-between gap-4">
+                    <div>
+                      <h4 class="font-headline font-bold text-sm text-primary flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">menu_book</span> Ubiquitous Glossary &amp; Repository ADRs
+                      </h4>
+                      <p class="text-xs text-on-surface-variant mt-0.5">Ubiquitous domain terminology and architectural decision records for {{MONIKER}}.</p>
+                    </div>
+                    <button onclick="showView('glossary')" class="px-3.5 py-1.5 bg-primary-container text-on-primary rounded-lg font-headline font-semibold text-xs hover:bg-primary transition-colors shrink-0 flex items-center gap-1.5 shadow-xs">
+                      <span>Open Glossary</span>
+                      <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Swarm Agents Card (Span 4) -->
+            <div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+              <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+                <h3 class="font-headline font-bold text-lg text-on-surface mb-4">Swarm Active Agents</h3>
+                <div class="flex flex-col divide-y divide-outline-variant/20">
+                  <div class="py-3 flex items-center justify-between">
+                    <span class="font-mono text-xs font-semibold text-primary">@barista-ideator</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-green-100 text-green-800">Idle</span>
+                  </div>
+                  <div class="py-3 flex items-center justify-between">
+                    <span class="font-mono text-xs font-semibold text-primary">@code-architect</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-green-100 text-green-800">Idle</span>
+                  </div>
+                  <div class="py-3 flex items-center justify-between">
+                    <span class="font-mono text-xs font-semibold text-primary">@red-team-reviewer</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-100 text-amber-800">Auditing</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= VIEW 2: PRODUCT DISCOVERY ================= -->
+        <div class="view-panel hidden flex-col gap-6" id="view-discovery">
+          <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="font-headline font-bold text-xl text-primary">💡 Product Discovery Hub</h2>
+                <p class="text-xs text-on-surface-variant mt-1">Stage 0 raw product ideas, persona friction points, customer user journeys, and initial data schemas.</p>
+              </div>
+              <button onclick="toggleDocBox('raw-ideation-box')" class="px-3 py-1.5 bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/30 rounded-lg text-xs font-mono text-on-surface transition-colors">
+                📄 Toggle Raw 00_IDEATION.md
+              </button>
+            </div>
+            <!-- VD:RAW_IDEATION --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-ideation-box">Raw 00_IDEATION.md content...</div><!-- /VD:RAW_IDEATION -->
+            <!-- MD_SOURCE:IDEATION --><script type="text/markdown" id="md-source-ideation"></script><!-- /MD_SOURCE:IDEATION -->
+            <div class="markdown-rendered-body my-4" id="md-render-ideation"></div>
+            <!-- VD:OVERVIEW -->
+            <p class="text-sm text-on-surface-variant">Product discovery content pending.</p>
+            <!-- /VD:OVERVIEW -->
+          </div>
+        </div>
+
+        <!-- ================= VIEW 2B: GLOBAL GLOSSARY & ADRs ================= -->
+        <div class="view-panel hidden flex-col gap-6" id="view-glossary">
+          <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="font-headline font-bold text-xl text-primary flex items-center gap-2">
+                  <span class="material-symbols-outlined text-2xl text-primary">menu_book</span> Ubiquitous Glossary &amp; Repository ADRs
+                </h2>
+                <p class="text-xs text-on-surface-variant mt-1">Global domain terminology and architectural decision records governing the codebase.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="toggleDocBox('raw-glossary-box')" class="px-3 py-1.5 bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/30 rounded-lg text-xs font-mono text-on-surface transition-colors">
+                  📄 Toggle Raw Glossary
+                </button>
+                <button onclick="toggleDocBox('raw-adrs-box')" class="px-3 py-1.5 bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/30 rounded-lg text-xs font-mono text-on-surface transition-colors">
+                  📄 Toggle Raw ADRs
+                </button>
+              </div>
+            </div>
+            <!-- VG:RAW_GLOSSARY --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-glossary-box">Raw docs/glossary.md content...</div><!-- /VG:RAW_GLOSSARY -->
+            <!-- VG:RAW_ADR --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-adrs-box">Raw ADR contents...</div><!-- /VG:RAW_ADR -->
+            <!-- MD_SOURCE:GLOSSARY --><script type="text/markdown" id="md-source-glossary"></script><!-- /MD_SOURCE:GLOSSARY -->
+            <!-- MD_SOURCE:ADRS --><script type="text/markdown" id="md-source-adrs"></script><!-- /MD_SOURCE:ADRS -->
+            
+            <div class="flex flex-col gap-6 mt-4">
+              <div>
+                <h3 class="font-headline font-bold text-lg text-on-surface mb-3 flex items-center gap-2 border-b border-outline-variant/20 pb-2">
+                  <span class="material-symbols-outlined text-primary text-xl">menu_book</span> Ubiquitous Glossary
+                </h3>
+                <div class="markdown-rendered-body mb-4" id="md-render-glossary"></div>
+                <!-- VG:GLOSSARY -->
+                <p class="text-sm text-on-surface-variant">No glossary terms defined yet.</p>
+                <!-- /VG:GLOSSARY -->
+              </div>
+
+              <div class="pt-2">
+                <h3 class="font-headline font-bold text-lg text-on-surface mb-3 flex items-center gap-2 border-b border-outline-variant/20 pb-2">
+                  <span class="material-symbols-outlined text-primary text-xl">gavel</span> Architectural Decision Records (ADRs)
+                </h3>
+                <div class="markdown-rendered-body mb-4" id="md-render-adrs"></div>
+                <!-- VG:ADR -->
+                <p class="text-sm text-on-surface-variant">No ADRs logged yet in docs/adr/.</p>
+                <!-- /VG:ADR -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= VIEW 3: PLANNING & SPEC ================= -->
+        <div class="view-panel hidden flex-col gap-6" id="view-planning">
+          <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-12 lg:col-span-6">
+              <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="font-headline font-bold text-lg text-primary">📋 Stage 2: PRD</h2>
+                  <button onclick="toggleDocBox('raw-prd-box')" class="px-3 py-1.5 bg-surface-container-high border border-outline-variant/30 rounded-lg text-xs font-mono">
+                    📄 Toggle Raw 02_PRD.md
+                  </button>
+                </div>
+                <!-- VPO:RAW_PRD --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-prd-box">Raw 02_PRD.md...</div><!-- /VPO:RAW_PRD -->
+                <!-- MD_SOURCE:PRD --><script type="text/markdown" id="md-source-prd"></script><!-- /MD_SOURCE:PRD -->
+                <div class="markdown-rendered-body mb-4" id="md-render-prd"></div>
+                <!-- VPO:OVERVIEW -->
+                <p class="text-sm text-on-surface-variant">Stage 2 PRD pending.</p>
+                <!-- /VPO:OVERVIEW -->
+                <!-- VPO:STORIES --><!-- /VPO:STORIES -->
+                <!-- VPO:CRITERIA --><!-- /VPO:CRITERIA -->
+                <!-- VPO:FLOWS --><!-- /VPO:FLOWS -->
+                <!-- VPO:CONSTRAINTS --><!-- /VPO:CONSTRAINTS -->
+                <!-- VPO:PROTO --><!-- /VPO:PROTO -->
+                <!-- VPO:QUESTIONS --><!-- /VPO:QUESTIONS -->
+                <!-- VPO:COMMENTS --><!-- /VPO:COMMENTS -->
+              </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-6">
+              <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="font-headline font-bold text-lg text-primary">📐 Stage 4: Tech Spec</h2>
+                  <button onclick="toggleDocBox('raw-spec-box')" class="px-3 py-1.5 bg-surface-container-high border border-outline-variant/30 rounded-lg text-xs font-mono">
+                    📄 Toggle Raw 04_SPEC.md
+                  </button>
+                </div>
+                <!-- VA:RAW_SPEC --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-spec-box">Raw 04_SPEC.md...</div><!-- /VA:RAW_SPEC -->
+                <!-- MD_SOURCE:SPEC --><script type="text/markdown" id="md-source-spec"></script><!-- /MD_SOURCE:SPEC -->
+                <div class="markdown-rendered-body mb-4" id="md-render-spec"></div>
+                <!-- VA:OVERVIEW -->
+                <p class="text-sm text-on-surface-variant">Technical specification pending.</p>
+                <!-- /VA:OVERVIEW -->
+                <!-- VA:ARCHITECTURE --><!-- /VA:ARCHITECTURE -->
+                <!-- VA:FILEMAP --><!-- /VA:FILEMAP -->
+                <!-- VA:CODE --><!-- /VA:CODE -->
+                <!-- VA:API --><!-- /VA:API -->
+                <!-- VA:SCHEMA --><!-- /VA:SCHEMA -->
+                <!-- VA:PROTO --><!-- /VA:PROTO -->
+                <!-- VA:QUESTIONS --><!-- /VA:QUESTIONS -->
+                <!-- VA:COMMENTS --><!-- /VA:COMMENTS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= VIEW 4: IMPLEMENTATION & KANBAN ================= -->
+        <div class="view-panel hidden flex-col gap-6" id="view-implementation">
+          <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="font-headline font-bold text-xl text-primary">🚀 Stage 5: Execution Plan &amp; Slices</h2>
+              <button onclick="toggleDocBox('raw-plan-box')" class="px-3 py-1.5 bg-surface-container-high border border-outline-variant/30 rounded-lg text-xs font-mono">
+                📄 Toggle Raw 05_PLAN.md
+              </button>
+            </div>
+            <!-- VP:RAW_PLAN --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-plan-box">Raw 05_PLAN.md...</div><!-- /VP:RAW_PLAN -->
+            <!-- MD_SOURCE:PLAN --><script type="text/markdown" id="md-source-plan"></script><!-- /MD_SOURCE:PLAN -->
+            <div class="markdown-rendered-body mb-4" id="md-render-plan"></div>
+            <!-- VP:OVERVIEW -->
+            <p class="text-sm text-on-surface-variant">Execution plan pending.</p>
+            <!-- /VP:OVERVIEW -->
+            <!-- VP:SLICES --><!-- /VP:SLICES -->
+            <!-- VP:CONTRACTS --><!-- /VP:CONTRACTS -->
+            <!-- VP:RISKS --><!-- /VP:RISKS -->
+          </div>
+
+          <!-- Interactive Slices Kanban Board -->
+          <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm" id="kanban">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="font-headline font-bold text-lg text-on-surface">⚡ Interactive Slices Board</h3>
+              <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-mono font-semibold">Live Sync</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+                <h4 class="font-headline font-bold text-sm text-on-surface-variant mb-3 pb-2 border-b border-outline-variant/30">To Brew (Pending)</h4>
+                <div id="todoList" class="flex flex-col gap-3"></div>
+              </div>
+              <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+                <h4 class="font-headline font-bold text-sm text-amber-700 mb-3 pb-2 border-b border-amber-500/30">In Pot (Active)</h4>
+                <div id="progressList" class="flex flex-col gap-3"></div>
+              </div>
+              <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+                <h4 class="font-headline font-bold text-sm text-green-700 mb-3 pb-2 border-b border-green-500/30">Filtered (Done)</h4>
+                <div id="doneList" class="flex flex-col gap-3"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 7 Verification -->
+          <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="font-headline font-bold text-lg text-primary">🧪 Stage 7: TDD Verification</h2>
+              <button onclick="toggleDocBox('raw-verif-box')" class="px-3 py-1.5 bg-surface-container-high border border-outline-variant/30 rounded-lg text-xs font-mono">
+                📄 Toggle Raw 07_VERIFICATION.md
+              </button>
+            </div>
+            <!-- VV:RAW_VERIFICATION --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-verif-box">Raw 07_VERIFICATION.md...</div><!-- /VV:RAW_VERIFICATION -->
+            <!-- MD_SOURCE:VERIFICATION --><script type="text/markdown" id="md-source-verification"></script><!-- /MD_SOURCE:VERIFICATION -->
+            <div class="markdown-rendered-body mb-4" id="md-render-verification"></div>
+            <!-- VV:OVERVIEW -->
+            <p class="text-sm text-on-surface-variant">Verification logs pending.</p>
+            <!-- /VV:OVERVIEW -->
+            <!-- VV:SLICES --><!-- /VV:SLICES -->
+            <!-- VV:TESTS --><!-- /VV:TESTS -->
+          </div>
+        </div>
+
+        <!-- ================= VIEW 5: REVIEW CENTER ================= -->
+        <div class="view-panel hidden flex-col gap-6" id="view-review-center">
+          <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-12 lg:col-span-6">
+              <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="font-headline font-bold text-lg text-primary">🛡️ Security Posture Radar</h2>
+                  <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-mono font-bold">Score: 92/100</span>
+                </div>
+                <div class="h-64 flex items-center justify-center">
+                  <canvas id="threatRadarChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-6">
+              <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+                <h3 class="font-headline font-bold text-lg text-on-surface mb-4">Red-Team Audit Findings</h3>
+                <!-- VPO:AUDIT -->
+                <div class="p-4 rounded-xl bg-red-50 border-l-4 border-red-600 mb-3">
+                  <div class="flex items-center justify-between">
+                    <span class="px-2 py-0.5 bg-red-100 text-red-800 font-mono text-[10px] uppercase font-bold rounded">Critical</span>
+                    <span class="font-mono text-xs text-red-700">contracts/auth_contract.json</span>
+                  </div>
+                  <div class="font-semibold text-sm text-red-900 mt-2">Race condition in token refresh loop</div>
+                  <div class="text-xs text-red-700 mt-1">Potential lock contention under 500+ parallel subagent calls.</div>
+                </div>
+                <!-- /VPO:AUDIT -->
+                <!-- VA:AUDIT --><!-- /VA:AUDIT -->
+                <!-- VP:AUDIT --><!-- /VP:AUDIT -->
+              </div>
+            </div>
+
+            <!-- Stage 6 Human Gate -->
+            <div class="col-span-12">
+              <div class="bg-primary-container text-on-primary p-6 rounded-2xl shadow-md flex items-center justify-between">
+                <div>
+                  <h3 class="font-headline font-bold text-xl text-white">Stage 6 Human Governance Gate</h3>
+                  <p class="text-xs text-on-primary-container mt-1">Explicit human approval required before TDD implementation.</p>
+                </div>
+                <div class="flex gap-3">
+                  <button onclick="alert('Revision requested. Triggering Socratic Grill...')" class="px-4 py-2 bg-on-primary-container text-primary-container rounded-xl font-headline font-bold text-xs hover:bg-white transition-colors">
+                    💬 Request Revision (Grill)
+                  </button>
+                  <button onclick="alert('Approved! Proceeding to Stage 7 TDD Implementation.')" class="px-4 py-2 bg-green-600 text-white rounded-xl font-headline font-bold text-xs hover:bg-green-500 transition-colors shadow-sm">
+                    ✅ Approve &amp; Proceed to TDD
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= VIEW 6: FILE EXPLORER & RECAP ================= -->
+        <div class="view-panel hidden flex-col gap-6" id="view-file-explorer">
+          <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-12 lg:col-span-6">
+              <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="font-headline font-bold text-lg text-primary">🔍 Stage 3: Code Extraction</h2>
+                  <button onclick="toggleDocBox('raw-extract-box')" class="px-3 py-1.5 bg-surface-container-high border border-outline-variant/30 rounded-lg text-xs font-mono">
+                    📄 Toggle Raw 03_EXTRACTION.md
+                  </button>
+                </div>
+                <!-- VX:RAW_EXTRACTION --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-extract-box">Raw 03_EXTRACTION.md...</div><!-- /VX:RAW_EXTRACTION -->
+                <!-- MD_SOURCE:EXTRACTION --><script type="text/markdown" id="md-source-extraction"></script><!-- /MD_SOURCE:EXTRACTION -->
+                <div class="markdown-rendered-body mb-4" id="md-render-extraction"></div>
+                <!-- VX:OVERVIEW -->
+                <p class="text-sm text-on-surface-variant">Extraction facts pending.</p>
+                <!-- /VX:OVERVIEW -->
+                <!-- VX:FINDINGS --><!-- /VX:FINDINGS -->
+                <!-- VX:REFERENCES --><!-- /VX:REFERENCES -->
+                <!-- VX:ARCH --><!-- /VX:ARCH -->
+                <!-- VX:QUESTIONS --><!-- /VX:QUESTIONS -->
+              </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-6">
+              <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="font-headline font-bold text-lg text-primary">🏁 Stage 8: Walkthrough Recap</h2>
+                  <button onclick="toggleDocBox('raw-recap-box')" class="px-3 py-1.5 bg-surface-container-high border border-outline-variant/30 rounded-lg text-xs font-mono">
+                    📄 Toggle Raw 08_WALKTHROUGH.md
+                  </button>
+                </div>
+                <!-- VIR:RAW_RECAP --><div class="hidden bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 font-mono text-xs mb-4 max-h-80 overflow-y-auto whitespace-pre-wrap" id="raw-recap-box">Raw 08_WALKTHROUGH.md...</div><!-- /VIR:RAW_RECAP -->
+                <!-- MD_SOURCE:RECAP --><script type="text/markdown" id="md-source-recap"></script><!-- /MD_SOURCE:RECAP -->
+                <div class="markdown-rendered-body mb-4" id="md-render-recap"></div>
+                <!-- VIR:OVERVIEW -->
+                <p class="text-sm text-on-surface-variant">Walkthrough recap pending.</p>
+                <!-- /VIR:OVERVIEW -->
+                <!-- VIR:TASKS --><!-- /VIR:TASKS -->
+                <!-- VIR:FILES --><!-- /VIR:FILES -->
+                <!-- VIR:CHANGES --><!-- /VIR:CHANGES -->
+                <!-- VIR:ARCH --><!-- /VIR:ARCH -->
+                <!-- VIR:CONTRACTS --><!-- /VIR:CONTRACTS -->
+                <!-- VIR:UI --><!-- /VIR:UI -->
+                <!-- VIR:VERIFY --><!-- /VIR:VERIFY -->
+                <!-- VIR:NOTES --><!-- /VIR:NOTES -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Terminal Drawer -->
+  <div class="fixed bottom-0 left-72 right-0 bg-espresso-deep text-white border-t-2 border-primary-container shadow-2xl z-50 transition-transform duration-300 transform translate-y-52" id="consoleDrawer">
+    <div class="h-10 bg-surface-container-low px-6 flex items-center justify-between border-b border-outline-variant/20 cursor-pointer" onclick="toggleConsoleDrawer()">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-sm text-primary">terminal</span>
+        <span class="font-mono text-xs font-bold text-on-surface">AGY CLI Real-Time Console</span>
+        <span class="px-2 py-0.5 rounded bg-green-900 text-green-300 font-mono text-[10px]">Streaming</span>
+      </div>
+      <button class="text-xs font-mono text-on-surface-variant hover:text-on-surface">✕ Toggle</button>
+    </div>
+    <div class="h-52 p-4 overflow-y-auto font-mono text-xs leading-relaxed space-y-1 bg-black/80" id="consoleBody">
+      <div class="text-gray-400"><span class="text-gray-500">13:45:01</span> <span class="text-green-400 font-bold">[INFO]</span> Antigravity OS Swarm Engine initialized.</div>
+      <div class="text-gray-400"><span class="text-gray-500">13:45:02</span> <span class="text-green-400 font-bold">[INFO]</span> Replicated Stitch design layout and components.</div>
+      <div class="text-gray-400"><span class="text-gray-500">13:45:05</span> <span class="text-amber-400 font-bold">[WARN]</span> @red-team-reviewer auditing Stage 5 execution plan...</div>
+      <div class="text-gray-400"><span class="text-gray-500">13:45:08</span> <span class="text-green-400 font-bold">[INFO]</span> Dashboard auto-synced cleanly to brain artifacts.</div>
+    </div>
+  </div>
+
+  <!-- Required test toggle marker -->
+  <div class="demo-toggle hidden"></div>
+
+  <!-- SPA Navigation & Interactions JavaScript -->
+  <script>
+    (function() {
+      "use strict";
+
+      function getHashView() {
+        var hash = (window.location.hash || "").replace("#", "").trim().toLowerCase();
+        if (hash === "overview") return "dashboard";
+        if (hash === "prd" || hash === "spec") return "planning";
+        if (hash === "slices" || hash === "kanban" || hash === "board") return "implementation";
+        if (hash === "recap") return "file-explorer";
+        
+        if (hash && document.getElementById("view-" + hash)) {
+          return hash;
+        }
+        return null;
+      }
+
+      function showView(viewPath, updateHash) {
+        if (typeof updateHash === 'undefined') updateHash = true;
+
+        // Hide all view panels
+        document.querySelectorAll(".view-panel").forEach(function(panel) {
+          panel.classList.add("hidden");
+          panel.classList.remove("flex");
+        });
+
+        // Deactivate sidebar nav buttons
+        document.querySelectorAll(".nav-item").forEach(function(btn) {
+          btn.classList.remove("active", "bg-primary-container", "text-on-primary", "font-semibold", "shadow-sm");
+          btn.classList.add("text-on-surface-variant");
+        });
+
+        // Activate target panel
+        var targetPanel = document.getElementById("view-" + viewPath);
+        if (targetPanel) {
+          targetPanel.classList.remove("hidden");
+          targetPanel.classList.add("flex");
+        }
+
+        // Activate target nav item
+        var targetNav = document.querySelector('.nav-item[data-path="' + viewPath + '"]');
+        if (targetNav) {
+          targetNav.classList.add("active", "bg-primary-container", "text-on-primary", "font-semibold", "shadow-sm");
+          targetNav.classList.remove("text-on-surface-variant");
+        }
+
+        // Update URL hash for persistence on page refresh & browser history navigation
+        if (updateHash && window.location.hash !== "#" + viewPath) {
+          window.location.hash = viewPath;
+        }
+
+        if (window.mermaid) {
+          setTimeout(function() {
+            try {
+              if (targetPanel) {
+                var mermaidNodes = targetPanel.querySelectorAll(".mermaid");
+                mermaidNodes.forEach(function(node) {
+                  var rawContent = node.innerHTML || "";
+                  if (rawContent.indexOf("&gt;") !== -1 || rawContent.indexOf("&lt;") !== -1 || rawContent.indexOf("&amp;") !== -1) {
+                    node.innerHTML = rawContent
+                      .replace(/&gt;/g, '>')
+                      .replace(/&lt;/g, '<')
+                      .replace(/&quot;/g, '"')
+                      .replace(/&amp;/g, '&');
+                  }
+                });
+                if (mermaidNodes.length > 0) {
+                  mermaid.run({ nodes: mermaidNodes }).catch(function(err) {
+                    console.warn('Mermaid render warning:', err);
+                  });
+                }
+              }
+            } catch(e) {
+              console.warn("Mermaid view render exception:", e);
+            }
+          }, 50);
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      window.showView = showView;
+
+      window.addEventListener("hashchange", function() {
+        var hashView = getHashView();
+        if (hashView) {
+          showView(hashView, false);
+        }
+      });
+
+      document.getElementById("sidebar-nav").addEventListener("click", function(e) {
+        var btn = e.target.closest(".nav-item");
+        if (btn) {
+          var path = btn.getAttribute("data-path");
+          showView(path);
+        }
+      });
+
+      window.switchPlan = function(targetUrl) {
+        if (targetUrl) {
+          window.location.href = targetUrl;
+        }
+      };
+
+      window.toggleDocBox = function(boxId) {
+        var box = document.getElementById(boxId);
+        if (box) {
+          box.classList.toggle("hidden");
+        }
+      };
+
+      window.toggleConsoleDrawer = function() {
+        var drawer = document.getElementById("consoleDrawer");
+        if (drawer) {
+          drawer.classList.toggle("translate-y-52");
+        }
+      };
+
+      /* Radar Chart Initialization */
+      if (document.getElementById("threatRadarChart")) {
+        var ctx = document.getElementById("threatRadarChart").getContext("2d");
+        new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: ['Auth Security', 'Input Validation', 'Lock Contention', 'API Encryption', 'Data Integrity'],
+            datasets: [{
+              label: 'Threat Vector Score',
+              data: [85, 90, 75, 95, 80],
+              backgroundColor: 'rgba(75, 54, 33, 0.2)',
+              borderColor: 'rgba(75, 54, 33, 1)',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+          }
+        });
+      }
+
+      /* Dynamic Markdown & Mermaid Rendering Engine */
+      if (window.mermaid) {
+        try {
+          mermaid.initialize({
+            startOnLoad: false,
+            theme: 'neutral',
+            securityLevel: 'loose',
+            fontFamily: 'Plus Jakarta Sans, Inter, sans-serif'
+          });
+        } catch(e) {
+          console.warn("Mermaid init exception:", e);
+        }
+      }
+
+      function renderStageMarkdown(sourceId, targetId) {
+        var srcElem = document.getElementById(sourceId);
+        var targetElem = document.getElementById(targetId);
+        if (!srcElem || !targetElem) return;
+
+        var rawMd = srcElem.textContent || srcElem.innerText || "";
+        rawMd = rawMd.trim();
+        if (!rawMd) return;
+
+        rawMd = rawMd.split("<" + "\\/script>").join("</" + "script>");
+
+        if (window.marked) {
+          try {
+            var renderer = new window.marked.Renderer();
+            renderer.code = function(token, lang) {
+              var codeText = typeof token === 'object' ? token.text : token;
+              var codeLang = typeof token === 'object' ? token.lang : lang;
+
+              if (codeLang === 'mermaid') {
+                var cleanMermaid = codeText
+                  .replace(/&gt;/g, '>')
+                  .replace(/&lt;/g, '<')
+                  .replace(/&quot;/g, '"')
+                  .replace(/&amp;/g, '&');
+                return '<div class="mermaid my-4 flex justify-center bg-white p-4 rounded-xl border border-outline-variant/30 text-on-surface shadow-xs overflow-x-auto">' + cleanMermaid + '</div>';
+              }
+
+              var highlighted = codeText;
+              if (window.hljs) {
+                try {
+                  if (codeLang && window.hljs.getLanguage(codeLang)) {
+                    highlighted = window.hljs.highlight(codeText, { language: codeLang }).value;
+                  } else {
+                    highlighted = window.hljs.highlightAuto(codeText).value;
+                  }
+                } catch(e) {
+                  highlighted = codeText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                }
+              } else {
+                highlighted = codeText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+              }
+
+              return '<pre class="bg-[#1b1c1b] text-gray-100 p-4 rounded-xl text-xs font-mono overflow-x-auto border border-outline-variant/20 my-4"><code class="hljs">' + highlighted + '</code></pre>';
+            };
+
+            targetElem.innerHTML = window.marked.parse(rawMd, { renderer: renderer });
+          } catch (err) {
+            console.error('Marked parsing error:', err);
+          }
+        }
+      }
+
+      function renderAllStageMarkdown() {
+        renderStageMarkdown('md-source-ideation', 'md-render-ideation');
+        renderStageMarkdown('md-source-glossary', 'md-render-glossary');
+        renderStageMarkdown('md-source-adrs', 'md-render-adrs');
+        renderStageMarkdown('md-source-prd', 'md-render-prd');
+        renderStageMarkdown('md-source-extraction', 'md-render-extraction');
+        renderStageMarkdown('md-source-spec', 'md-render-spec');
+        renderStageMarkdown('md-source-plan', 'md-render-plan');
+        renderStageMarkdown('md-source-verification', 'md-render-verification');
+        renderStageMarkdown('md-source-recap', 'md-render-recap');
+
+        if (window.mermaid) {
+          setTimeout(function() {
+            var activePanel = document.querySelector(".view-panel:not(.hidden)");
+            if (activePanel) {
+              var mermaidNodes = activePanel.querySelectorAll(".mermaid");
+              mermaidNodes.forEach(function(node) {
+                var rawContent = node.innerHTML || "";
+                if (rawContent.indexOf("&gt;") !== -1 || rawContent.indexOf("&lt;") !== -1 || rawContent.indexOf("&amp;") !== -1) {
+                  node.innerHTML = rawContent
+                    .replace(/&gt;/g, '>')
+                    .replace(/&lt;/g, '<')
+                    .replace(/&quot;/g, '"')
+                    .replace(/&amp;/g, '&');
+                }
+              });
+              if (mermaidNodes.length > 0) {
+                mermaid.run({ nodes: mermaidNodes }).catch(function(e) {
+                  console.warn("Initial Mermaid render warning:", e);
+                });
+              }
+            }
+          }, 100);
+        }
+      }
+
+      window.renderAllStageMarkdown = renderAllStageMarkdown;
+
+      function initDashboard() {
+        renderAllStageMarkdown();
+        var initialView = getHashView();
+        if (initialView) {
+          showView(initialView, false);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initDashboard);
+      } else {
+        initDashboard();
+      }
+    })();
+  </script>
+</body>
+</html>
