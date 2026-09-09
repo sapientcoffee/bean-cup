@@ -1,12 +1,20 @@
+<p align="center">
+  <img src="assets/banner.png" alt="Bean-Cup Banner" width="100%" />
+</p>
+
 # 🍵 Bean-Cup
 
-> Unified Visual Dashboard, Interactive Kanban Tracker, and Autonomous Workflow State Scanner for Antigravity SDLC pipelines.
+> **Unified Visual Dashboard, Interactive Kanban Tracker, and Autonomous Workflow State Scanner for Antigravity SDLC pipelines.**
 
 ---
 
-## ☕ Why "The Cup"? (The Metaphor)
+## ☕ Why "The Cup"? (The Metaphor Explained)
 
-In specialty coffee brewing, the cup is the final, immaculate presentation layer. No matter what bean variety, roast profile, or extraction pressure was used, the cup is where clarity, color, aroma, and tasting notes are presented to the person enjoying the drink.
+<p align="center">
+  <img src="assets/sketch.png" alt="Bean-Cup Fun Sketch" width="480px" />
+</p>
+
+In specialty coffee brewing, the cup is the final, immaculate presentation layer. No matter what bean variety, roast profile, grind size, or extraction pressure was used, the cup is where clarity, color, aroma, and tasting notes are presented to the person enjoying the drink.
 
 In our agentic swarm, **`bean-cup`** is that presentation layer:
 - It does not brew code or roast requirements.
@@ -40,20 +48,64 @@ In our agentic swarm, **`bean-cup`** is that presentation layer:
 
 ---
 
-## 🔄 End-to-End Workflow
+## 🔄 End-to-End Workflow & Architecture
 
 ```mermaid
-graph TD
-    FileSystem[Plans Directory: plans/feature/timestamp/] --> Scanner["bean_cup.py scan"]
-    Scanner -->|State Evaluation| Decision{"What's Next Engine"}
-    Decision -->|Missing PRD| SuggestRoaster["Suggest: bean-roaster (/write-prd)"]
-    Decision -->|Missing Spec/Code| SuggestBrewer["Suggest: bean-brewer (@architect / @engineer)"]
-    Decision -->|All Slices Built| SuggestWalkthrough["Suggest: bean-brewer (/record)"]
-    
-    FileSystem --> AutoSync["bean_cup.py auto-sync"]
-    AutoSync --> MasterHTML["visual-dashboard.html"]
-    MasterHTML --> Server["bean_cup.py serve (Port 8080)"]
-    MasterHTML --> DualWrite["Mirror to Brain Artifacts (00_visual-dashboard.html)"]
+flowchart TD
+    subgraph Inputs["📁 Input Sources"]
+        UserCmd["User / agy CLI<br/>(python3 bean_cup.py scan/serve)"]
+        PlanDir["Workspace Plans<br/>(./plans/&lt;feature&gt;/&lt;timestamp&gt;/)"]
+    end
+
+    subgraph Engine["🔍 Dynamic State Scanner (bean_cup.py scan)"]
+        Inspect["Inspect Markdown Files"]
+        Checklist["Parse 05_PLAN.md<br/>Checkboxes [ ], [/], [x]"]
+        Metrics["Compute Completion %<br/>& Active Stage Index"]
+        WhatsNext{"What's Next Engine"}
+    end
+
+    subgraph Stages["📑 Stage Detection Matrix"]
+        S0["00_IDEATION.md<br/>Stage 0: Discovery"]
+        S1["docs/glossary.md<br/>Stage 1: Alignment"]
+        S2["02_PRD.md<br/>Stage 2: Requirements"]
+        S4["04_SPEC.md<br/>Stage 4: Specification"]
+        S5["05_PLAN.md<br/>Stage 5: Execution Plan"]
+        S7["07_VERIFICATION.md<br/>Stage 7: TDD Slices"]
+        S8["08_WALKTHROUGH.md<br/>Stage 8: Walkthrough"]
+    end
+
+    subgraph Actions["⚡ Prescribed Sibling Recommendations"]
+        ActRoaster["Missing PRD ➔ Suggest: bean-roaster<br/>(/ideator, /grill, /write-prd)"]
+        ActBrewerSpec["Missing Spec ➔ Suggest: bean-brewer<br/>(@architect)"]
+        ActBrewerTDD["Incomplete Tasks ➔ Suggest: bean-brewer<br/>(@engineer + @auditor)"]
+        ActRecord["Slices Built ➔ Suggest: bean-brewer<br/>(/record terminal walkthrough)"]
+        ActDelivery["Walkthrough Ready ➔ Suggest: bean-brewer<br/>(git-delivery / PR)"]
+    end
+
+    subgraph UI["💻 Presentation & Dual-Write Layer"]
+        SyncEngine["auto-sync Engine<br/>(Injects Markdown to Tabs)"]
+        MasterHTML["visual-dashboard.html<br/>(Responsive Single-Page UI)"]
+        LocalServer["bean_cup.py serve<br/>(Local HTTP Port 8080)"]
+        BrainDualWrite["Artifact Dual-Write<br/>(~/.gemini/.../00_visual-dashboard.html)"]
+    end
+
+    PlanDir --> Inspect
+    Inspect --> S0 & S1 & S2 & S4 & S5 & S7 & S8
+    S5 --> Checklist
+    Checklist --> Metrics
+    Metrics --> WhatsNext
+
+    WhatsNext -->|Missing Stage 0-2| ActRoaster
+    WhatsNext -->|Missing Stage 4-5| ActBrewerSpec
+    WhatsNext -->|Tasks In Progress| ActBrewerTDD
+    WhatsNext -->|Tasks Complete, No Walkthrough| ActRecord
+    WhatsNext -->|Walkthrough Complete| ActDelivery
+
+    PlanDir --> SyncEngine
+    SyncEngine --> MasterHTML
+    UserCmd --> LocalServer
+    LocalServer --> MasterHTML
+    MasterHTML --> BrainDualWrite
 ```
 
 ---
